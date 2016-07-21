@@ -1,0 +1,164 @@
+<html>
+  <head>
+    <title>Translate API Example</title>
+  </head>
+  <body onload="loadXMLDoc()">
+      <div>
+          <table border="1">
+              <thead>
+              </thead>
+              <tbody>
+                <tr>
+                      <td>
+                       <div id="sourceText" onload="loadXMLDoc()"><b>English</b><br></div>
+                      </td>
+                      <td>
+                        <div id="translation"><b>Spanish</b><br></div>
+                      </td>
+                      <td>
+                        <div id="translate"><b>German</b><br></div>
+                      </td>
+                    <td>
+                        <div id="translated"><b>Hindi</b><br></div>
+                      </td>
+                  </tr>
+                  
+              </tbody>
+              </table>
+          </div>
+    <script>
+      function translateText(response) {
+        
+        document.getElementById("translation").innerHTML += response+"</br>";
+      }
+        function translateTexts(response) {
+        document.getElementById("translate").innerHTML += response+"</br>";
+      }
+        function translateTextsa(response) {
+        document.getElementById("translated").innerHTML += response+"</br>";
+      }
+    </script>
+    <script>
+        function loadXMLDoc()
+        {
+        var xmlhttp;
+        if (window.XMLHttpRequest)
+          {// code for IE7+, Firefox, Chrome, Opera, Safari
+          xmlhttp = new XMLHttpRequest();
+          }
+        else
+          {// code for IE6, IE5
+          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+          }
+        var arr = [];
+        xmlhttp.onreadystatechange = function()
+          {
+          if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+            {
+
+             var txt="";   
+
+                arr=xmlhttp.responseText.split('\n'); 
+                console.log(arr);
+                printdata(arr)
+            }
+        }
+        xmlhttp.open("GET","trial11.txt",true);
+        xmlhttp.send();
+        }
+        function printdata(arr)
+        {
+            for (var i = 0; i <arr.length; i++){ 
+                //arr.push(""+i);
+
+                document.getElementById("sourceText").innerHTML += arr[i] + "<br>";
+                    var sourceText = arr[i];
+                console.log(sourceText); 
+                  // WARNING: Your API key will be visible in the page source.
+                  // To prevent misuse, restrict your key to designated domains or use a
+                  // proxy to hide your key.
+
+                  var source = 'https://www.googleapis.com/language/translate/v2?key=AIzaSyAuTf1csdpQoR_iS_srkGApLQidSisVZB0&source=en&target=es&callback=translateText&q=' + sourceText;
+                  var source1 = 'https://www.googleapis.com/language/translate/v2?key=AIzaSyAuTf1csdpQoR_iS_srkGApLQidSisVZB0&source=en&target=de&callback=translateText&q=' + sourceText;
+                 var source2 = 'https://www.googleapis.com/language/translate/v2?key=AIzaSyAuTf1csdpQoR_iS_srkGApLQidSisVZB0&source=en&target=de&callback=translateText&q=' + sourceText;
+                console.log(source);
+                    ajaxcall(source);
+                ajaxcall1(source1);
+                ajaxcall2(source2);
+                    
+
+              }
+        }
+        function ajaxcall(source){
+            console.log("im here"+source);
+            var xhr = new XMLHttpRequest();
+                    xhr.open('GET', encodeURI(source), false);
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            var output = xhr.responseText;
+                            output = output.substring(16);
+                            output = output.substring(14,output.length-2);
+                            
+                            console.log(output);
+                            var json = JSON.parse(output);
+                            var data = json.data.translations[0].translatedText;
+                            translateText(data);
+                           
+                        }
+                        else {
+                            console.log('Request failed.  Returned status of ' + xhr.status);
+                            console.log(sourceText);
+                        }
+                    };
+                    xhr.send();
+        }
+        function ajaxcall1(source){
+            console.log("im here"+source);
+            var xhr = new XMLHttpRequest();
+                    xhr.open('GET', encodeURI(source), false);
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            var output = xhr.responseText;
+                            output = output.substring(16);
+                            output = output.substring(14,output.length-2);
+                            
+                            console.log(output);
+                            var json = JSON.parse(output);
+                            var data = json.data.translations[0].translatedText;
+                            translateTexts(data);
+                           
+                        }
+                        else {
+                            console.log('Request failed.  Returned status of ' + xhr.status);
+                            console.log(sourceText);
+                        }
+                    };
+                    xhr.send();
+        }
+        function ajaxcall2(source){
+            console.log("im here"+source);
+            var xhr = new XMLHttpRequest();
+                    xhr.open('GET', encodeURI(source), false);
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            var output = xhr.responseText;
+                            output = output.substring(16);
+                            output = output.substring(14,output.length-2);
+                            
+                            console.log(output);
+                            var json = JSON.parse(output);
+                            var data = json.data.translations[0].translatedText;
+                            translateTextsa(data);
+                           
+                        }
+                        else {
+                            console.log('Request failed.  Returned status of ' + xhr.status);
+                            console.log(sourceText);
+                        }
+                    };
+                    xhr.send();
+        }
+    </script>
+      
+  </body>
+</html>
